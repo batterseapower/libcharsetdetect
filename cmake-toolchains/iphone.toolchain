@@ -1,8 +1,12 @@
 # Michael Aaron Safyan (michaelsafyan@gmail.com). Copyright (C) 2009-2010. Simplified BSD License.
+
+# Grr.. variables set by -D seem to be invisible when processing the toolchain file
+SET (SDKVER $ENV{SDKVER})
+
 SET (CMAKE_SYSTEM_NAME Generic)
 SET (CMAKE_SYSTEM_VERSION 1)
 SET (CMAKE_SYSTEM_PROCESSOR arm)
-SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
+SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
 
 SET (DEVROOT "/Developer/Platforms/iPhoneOS.platform/Developer")
 SET (SDKROOT "${DEVROOT}/SDKs/iPhoneOS${SDKVER}.sdk")
@@ -12,21 +16,23 @@ SET (CMAKE_OSX_ARCHITECTURES "armv6" "armv7")
 SET (CMAKE_C_COMPILER "${DEVROOT}/usr/bin/gcc-4.2")
 SET (CMAKE_CXX_COMPILER "${DEVROOT}/usr/bin/g++-4.2")
 
-SET (CMAKE_C_COMPILER "${DEVROOT}/usr/bin/gcc-4.2")
-SET (CMAKE_CXX_COMPILER "${DEVROOT}/usr/bin/g++-4.2")
+# NB: these flags are passed to both the linker and the compiler
 
-SET (CMAKE_C_FLAGS "-std=c99" "-x objective-c")
-SET (CMAKE_C_FLAGS_DEBUG ${CMAKE_C_FLAGS} "-DDEBUG=1" "-ggdb")
-SET (CMAKE_C_FLAGS_RELEASE ${CMAKE_C_FLAGS} "-DNDEBUG=1")
-SET (CMAKE_C_FLAGS_RELWITHDEBINFO ${CMAKE_C_FLAGS} "-DNDEBUG=1" "-ggdb")
+SET (LINKER_COMPILER_COMMON_FLAGS "-arch armv6 -arch armv7")
 
-SET (CMAKE_CXX_FLAGS "-x objective-c++")
-SET (CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS} "-DDEBUG=1" "-ggdb")
-SET (CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS} "-DNDEBUG=1")
-SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS} "-DNDEBUG=1" "-ggdb")
+SET (CMAKE_C_FLAGS "${LINKER_COMPILER_COMMON_FLAGS} -std=c99")
+SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -DDEBUG=1 -ggdb")
+SET (CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -DNDEBUG=1")
+SET (CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS} -DNDEBUG=1 -ggdb")
 
-ADD_DEFINITIONS("-arch armv6")
-ADD_DEFINITIONS("-arch armv7")
+SET (CMAKE_CXX_FLAGS ${LINKER_COMPILER_COMMON_FLAGS})
+SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -DDEBUG=1 -ggdb")
+SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -DNDEBUG=1")
+SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} -DNDEBUG=1 -ggdb")
+
+# NB: these flags are passed only to the compiler
+
+# ADD_DEFINITIONS("-x objective-c") # FIXME: should be c++ for CXX.. but can't add to CXX/C_FLAGS because they get passed to linker >_>
 ADD_DEFINITIONS("-pipe")
 ADD_DEFINITIONS("-no-cpp-precomp")
 ADD_DEFINITIONS("--sysroot=${SDKROOT}")
@@ -48,6 +54,3 @@ SET (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 SET (iPhone 1)
 SET (iPhoneOS 1)
 SET (iPhoneOS_VERSION ${SDKVER})
-
-# The iPhone does not support shared libraries
-SET (BUILD_SHARED_LIBS OFF)
