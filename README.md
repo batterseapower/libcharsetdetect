@@ -2,6 +2,9 @@
 
 A library exposing a C interface and dependency-free interface to the Mozilla C++ UCSD library.
 
+This library provides a highly accurate set of heuristics that attempt to determine the character set used to encode some input text.
+This is extremely useful when your program has to handle an input file which is supplied without any encoding metadata.
+
 Pulls together:
 
   * A NSPR emulation library (see `nspr-emu/README.md`)
@@ -47,6 +50,51 @@ Finally, close the detector to find out what the character set is:
 The detected character set name is returned as an ASCII string. This function returns `NULL` if detection failed because there was not
 enough data. It is safe to call `csd_close` at any point from creation by `csd_open` to the first call of `csd_close` on that character
 set detector.
+
+## Full example
+
+This is a complete C program that shows how the library can be used to build a simple command-line character set detector:
+
+    #include "charsetdetect.h"
+    #include "stdio.h"
+
+    #define BUFFER_SIZE 4096
+
+    int main(int argc, const char * argv[]) {
+        csd_t csd = csd_open();
+        if (csd == (csd_t)-1) {
+            printf("csd_open failed\n");
+            return 1;
+        }
+    
+        int size;
+        char buf[BUFFER_SIZE] = {0};
+
+        while ((size = fread(buf, 1, sizeof(buf), stdin)) != 0) {
+            int result = csd_consider(csd, buf, size);
+            if (result < 0) {
+                printf("csd_consider failed\n");
+                return 3;
+            } else if (result > 0) {
+                // Already have enough data
+                break;
+            }
+        }
+    
+        const char *result = csd_close(csd);
+        if (result == NULL) {
+            printf("Unknown character set\n");
+            return 2;
+        } else {
+            printf("%s\n", result);
+            return 0;
+        }
+    }
+
+You can compile it and try it (on platforms with GCC) as follows:
+
+    gcc example.c -lcharsetdetect
+    ./a.out < my_test_file.txt
 
 ## Licensing
 
