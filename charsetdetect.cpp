@@ -59,7 +59,7 @@ csd_t csd_open(void) {
     return new Detector(NS_FILTER_ALL);
 }
 
-int csd_consider(csd_t csd, char *data, int length) {
+int csd_consider(csd_t csd, const char *data, int length) {
     return ((Detector*)csd)->Consider(data, length);
 }
 
