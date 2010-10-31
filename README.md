@@ -4,9 +4,19 @@ A library exposing a C interface and dependency-free interface to the Mozilla C+
 
 Pulls together:
 
-  * A NSPR emulation library (see nspr-emu/README.md)
+  * A NSPR emulation library (see `nspr-emu/README.md`)
   * Code written by Colin Snover to provide a command line interface to the library
   * The UCSD library itself from the Mozilla seamonkey source tree
+
+## Building
+
+We have a build system based on CMake, so you will need that installed. That done, simply do this incantation:
+
+    cmake .
+    make
+    sudo make install
+
+This will install the header file `charsetdetect.h` and the UCSD shared library, which you should link against in your compiler.
 
 ## API documentation
 
@@ -40,7 +50,7 @@ set detector.
 
 ## Licensing
 
-The files libcharsetdetect.{cpp,h} are (c) 2010 Colin Snover and released under an MIT license.
+The files `libcharsetdetect.{cpp,h}` are (c) 2010 Colin Snover and released under an MIT license.
 
 The UCSD is (c) mozilla.org and tri-licensed under MPL 1.1/GPL 2.0/LGPL 2.1.
 
