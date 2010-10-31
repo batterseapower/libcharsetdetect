@@ -11,6 +11,8 @@ Pulls together:
   * Code written by Colin Snover to provide a command line interface to the library
   * The UCSD library itself from the Mozilla seamonkey source tree
 
+The UCSD version provided is that present in the Mozilla public repo as of 31/10/2010.
+
 ## Building
 
 We have a build system based on CMake, so you will need that installed. That done, simply do this incantation:
@@ -95,6 +97,49 @@ You can compile it and try it (on platforms with GCC) as follows:
 
     gcc example.c -lcharsetdetect
     ./a.out < my_test_file.txt
+
+## Known character sets
+
+The list of possible character sets that can be returned from the library as of the most recent update are:
+
+    Big5
+    EUC-JP
+    EUC-KR
+    GB18030
+    gb18030
+    HZ-GB-2312
+    IBM855
+    IBM866
+    ISO-2022-CN
+    ISO-2022-JP
+    ISO-2022-KR
+    ISO-8859-2
+    ISO-8859-5
+    ISO-8859-7
+    ISO-8859-8
+    KOI8-R
+    Shift_JIS
+    TIS-620
+    UTF-8
+    UTF-16BE
+    UTF-16LE
+    UTF-32BE
+    UTF-32LE
+    windows-1250
+    windows-1251
+    windows-1252
+    windows-1253
+    windows-1255
+    x-euc-tw
+    X-ISO-10646-UCS-4-2143
+    X-ISO-10646-UCS-4-3412
+    x-mac-cyrillic
+
+We believe this list to be exhaustive. Future updates to the UCSD library may add more alternatives, but we will endeavour to keep
+this list current.
+
+Notice that you may get both capitalisations of `GB18030`. For this reason (and to be future-proof against any future behaviour
+like this for newly-added character sets) we recommend that you compare character set names case insensitively.
 
 ## Licensing
 
