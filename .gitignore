@@ -1,0 +1,10 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# XCode build artifacts
+build/
+
+# XCode user configuration
+*.mode1v3
+*.pbxuser
