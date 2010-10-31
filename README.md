@@ -17,7 +17,7 @@ The UCSD version provided is that present in the Mozilla public repo as of 31/10
 
 We have a build system based on CMake, so you will need that installed. That done, simply do this incantation:
 
-    cmake .
+    ./configure
     make
     sudo make install
 
