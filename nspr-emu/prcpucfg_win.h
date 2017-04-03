@@ -100,7 +100,7 @@
 #define PR_BYTES_PER_WORD_LOG2	2
 #define PR_BYTES_PER_DWORD_LOG2	2
 
-#elif defined(_M_X64) || defined(_M_AMD64) || defined(_AMD64_)
+#elif defined(_M_X64) || defined(_M_AMD64) || defined(_AMD64_) || defined(__x86_64)
 
 #define IS_LITTLE_ENDIAN 1
 #undef  IS_BIG_ENDIAN
